@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucas Musschoot's Baby Preparation App</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #e6f3ff;
+            background-image: linear-gradient(45deg, #e6f3ff 25%, #c1e3ff 25%, #c1e3ff 50%, #e6f3ff 50%, #e6f3ff 75%, #c1e3ff 75%, #c1e3ff 100%);
+            background-size: 40px 40px;
+        }
+
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            width: 90%;
+        }
+
+        h1 {
+            color: #0066cc;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #3399ff;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 8px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        nav {
+            margin-bottom: 20px;
+        }
+
+        nav button {
+            margin: 0 5px;
+            background-color: #3399ff;
+        }
+
+        nav button:hover {
+            background-color: #0066cc;
+        }
+
+        .section {
+            display: none;
+            background-color: #f0f8ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        li {
+            margin-bottom: 10px;
+            background-color: #ffffff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #3399ff;
+            border-radius: 5px;
+            margin-right: 5px;
+        }
+
+        .baby-name {
+            font-size: 24px;
+            color: #0066cc;
+            margin-bottom: 20px;
+        }
+
+        #completedTasks {
+            margin-top: 30px;
+            border-top: 2px solid #3399ff;
+            padding-top: 20px;
+        }
+
+        #completedTasks h2 {
+            color: #4CAF50;
+        }
+
+        #completedTasksList li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .restore-btn {
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .restore-btn:hover {
+            background-color: #e68a00;
+        }
+
+        .subtasks {
+            margin-left: 20px;
+            display: none;
+        }
+
+        .subtasks.show {
+            display: block;
+        }
+
+        .expand-btn {
+            background-color: #3399ff;
+            color: white;
+            border: none;
+            padding: 2px 5px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 12px;
+        }
+
+        .expand-btn:hover {
+            background-color: #0066cc;
+        }
+
+        .add-subtask-input {
+            width: 70%;
+            padding: 5px;
+            margin-right: 5px;
+        }
+
+        .add-subtask-btn {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .remove-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 2px 5px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-left: 5px;
+            font-size: 12px;
+        }
+
+        .remove-btn:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Baby Boy Preparation App</h1>
+        <div class="baby-name">For Lucas Musschoot</div>
+        <nav>
+            <button data-section="todos">To-Do's</button>
+            <button data-section="clothing">Clothing</button>
+            <button data-section="furniture">Furniture</button>
+            <button data-section="babyShower">Baby Shower</button>
+            <button data-section="health">Health & Safety</button>
+            <button data-section="completed">Completed Tasks</button>
+        </nav>
+
+        <div id="todos" class="section">
+            <h2>To-Do List</h2>
+            <ul id="todoList"></ul>
+            <input type="text" id="newTodo" placeholder="Add new task">
+            <button id="addTodo">Add</button>
+        </div>
+
+        <div id="clothing" class="section">
+            <h2>Clothing Checklist</h2>
+            <ul id="clothingList"></ul>
+        </div>
+
+        <div id="furniture" class="section">
+            <h2>Furniture Checklist</h2>
+            <ul id="furnitureList"></ul>
+        </div>
+
+        <div id="babyShower" class="section">
+            <h2>Baby Shower Planning</h2>
+            <ul id="babyShowerList"></ul>
+        </div>
+
+        <div id="health" class="section">
+            <h2>Health & Safety Checklist</h2>
+            <ul id="healthList"></ul>
+        </div>
+
+        <div id="completed" class="section">
+            <h2>Completed Tasks</h2>
+            <ul id="completedTasksList"></ul>
+        </div>
+    </div>
+    <script>
+        // JavaScript code here
+        const sections = document.querySelectorAll('.section');
+        const navButtons = document.querySelectorAll('nav button');
+
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const sectionId = button.getAttribute('data-section');
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                document.getElementById(sectionId).classList.add('active');
+            });
+        });
+
+        // Sample data for each category
+        const todos = ['Schedule prenatal appointments', 'Research pediatricians', 'Prepare nursery'];
+        const clothing = ['Onesies', 'Socks', 'Hats', 'Mittens', 'Blankets'];
+        const furniture = ['Crib', 'Changing table', 'Rocking chair', 'Dresser'];
+        const babyShower = ['Create guest list', 'Choose theme', 'Send invitations', 'Plan games'];
+        const health = ['Install baby gates', 'Cover electrical outlets', 'Purchase first aid kit', 'Research infant CPR'];
+
+        function createTaskItem(item, listId) {
+            const li = document.createElement('li');
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    moveToCompleted(li, listId);
+                }
+            });
+            li.appendChild(checkbox);
+            li.appendChild(document.createTextNode(item));
+
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = 'Remove';
+            removeBtn.className = 'remove-btn';
+            removeBtn.addEventListener('click', function() {
+                removeTask(li);
+            });
+            li.appendChild(removeBtn);
+
+            const expandBtn = document.createElement('button');
+            expandBtn.textContent = '+';
+            expandBtn.className = 'expand-btn';
+            expandBtn.addEventListener('click', function() {
+                toggleSubtasks(li);
+            });
+            li.appendChild(expandBtn);
+
+            const subtasks = document.createElement('div');
+            subtasks.className = 'subtasks';
+            const subtaskList = document.createElement('ul');
+            subtasks.appendChild(subtaskList);
+
+            const addSubtaskInput = document.createElement('input');
+            addSubtaskInput.type = 'text';
+            addSubtaskInput.className = 'add-subtask-input';
+            addSubtaskInput.placeholder = 'Add subtask';
+            subtasks.appendChild(addSubtaskInput);
+
+            const addSubtaskBtn = document.createElement('button');
+            addSubtaskBtn.textContent = 'Add';
+            addSubtaskBtn.className = 'add-subtask-btn';
+            addSubtaskBtn.addEventListener('click', function() {
+                addSubtask(subtaskList, addSubtaskInput);
+            });
+            subtasks.appendChild(addSubtaskBtn);
+
+            li.appendChild(subtasks);
+
+            li.dataset.originalList = listId;
+            document.getElementById(listId).appendChild(li);
+        }
+
+        function removeTask(li) {
+            li.parentNode.removeChild(li);
+        }
+
+        function toggleSubtasks(li) {
+            const subtasks = li.querySelector('.subtasks');
+            subtasks.classList.toggle('show');
+        }
+
+        function addSubtask(subtaskList, input) {
+            const subtaskText = input.value.trim();
+            if (subtaskText) {
+                const subtaskItem = document.createElement('li');
+                const subtaskCheckbox = document.createElement('input');
+                subtaskCheckbox.type = 'checkbox';
+                subtaskItem.appendChild(subtaskCheckbox);
+                subtaskItem.appendChild(document.createTextNode(subtaskText));
+                subtaskList.appendChild(subtaskItem);
+                input.value = '';
+            }
+        }
+
+        function moveToCompleted(li, originalListId) {
+            const completedList = document.getElementById('completedTasksList');
+            li.removeChild(li.querySelector('input[type="checkbox"]')); // Remove checkbox
+            li.removeChild(li.querySelector('.remove-btn')); // Remove remove button
+            li.removeChild(li.querySelector('.expand-btn')); // Remove expand button
+            li.removeChild(li.querySelector('.subtasks')); // Remove subtasks div
+            
+            const restoreBtn = document.createElement('button');
+            restoreBtn.textContent = 'Restore';
+            restoreBtn.className = 'restore-btn';
+            restoreBtn.addEventListener('click', function() {
+                restoreTask(li, originalListId);
+            });
+            
+            li.appendChild(restoreBtn);
+            completedList.appendChild(li);
+        }
+
+        function restoreTask(li, originalListId) {
+            const originalList = document.getElementById(originalListId);
+            li.removeChild(li.querySelector('.restore-btn')); // Remove restore button
+            
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.addEventListener('change', function() {
+                if (this.checked) {
+                    moveToCompleted(li, originalListId);
+                }
+            });
+            
+            const removeBtn = document.createElement('button');
+            removeBtn.textContent = 'Remove';
+            removeBtn.className = 'remove-btn';
+            removeBtn.addEventListener('click', function() {
+                removeTask(li);
+            });
+
+            const expandBtn = document.createElement('button');
+            expandBtn.textContent = '+';
+            expandBtn.className = 'expand-btn';
+            expandBtn.addEventListener('click', function() {
+                toggleSubtasks(li);
+            });
+
+            li.insertBefore(expandBtn, li.firstChild);
+            li.insertBefore(removeBtn, li.firstChild);
+            li.insertBefore(checkbox, li.firstChild);
+            originalList.appendChild(li);
+
+            // Recreate subtasks div
+            const subtasks = document.createElement('div');
+            subtasks.className = 'subtasks';
+            const subtaskList = document.createElement('ul');
+            subtasks.appendChild(subtaskList);
+
+            const addSubtaskInput = document.createElement('input');
+            addSubtaskInput.type = 'text';
+            addSubtaskInput.className = 'add-subtask-input';
+            addSubtaskInput.placeholder = 'Add subtask';
+            subtasks.appendChild(addSubtaskInput);
+
+            const addSubtaskBtn = document.createElement('button');
+            addSubtaskBtn.textContent = 'Add';
+            addSubtaskBtn.className = 'add-subtask-btn';
+            addSubtaskBtn.addEventListener('click', function() {
+                addSubtask(subtaskList, addSubtaskInput);
+            });
+            subtasks.appendChild(addSubtaskBtn);
+
+            li.appendChild(subtasks);
+        }
+
+        function populateList(listId, items) {
+            items.forEach(item => createTaskItem(item, listId));
+        }
+
+        populateList('todoList', todos);
+        populateList('clothingList', clothing);
+        populateList('furnitureList', furniture);
+        populateList('babyShowerList', babyShower);
+        populateList('healthList', health);
+
+        // Modify the add new todo functionality
+        const newTodoInput = document.getElementById('newTodo');
+        const addTodoButton = document.getElementById('addTodo');
+        const todoList = document.getElementById('todoList');
+
+        addTodoButton.addEventListener('click', () => {
+            const newTodoText = newTodoInput.value.trim();
+            if (newTodoText) {
+                createTaskItem(newTodoText, 'todoList');
+                newTodoInput.value = '';
+            }
+        });
+
+        // Show the To-Do section by default
+        document.getElementById('todos').classList.add('active');
+    </script>
+</body>
+</html>
